@@ -27,20 +27,25 @@ class MainActivity : AppCompatActivity() {
         // var view = binding.root
         // setContentView(view)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        // binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.btnCameraPermission.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
                 // Inform user that he has already access to the camera permission.
-                Toast.makeText(this, "You already have access to the permission", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "You already have access to the permission for Camera and GPS", Toast.LENGTH_LONG).show()
 
             } else {
 
                 // Ask user to allow permission for the requested feature.
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
-
+                ActivityCompat.requestPermissions(this, arrayOf(
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION),
+                        CAMERA_AND_FINE_LOCATION_PERMISSION_CODE)
             }
 
         }
@@ -69,7 +74,8 @@ class MainActivity : AppCompatActivity() {
     // Data class which JUST contains constants
     companion object {
         private const val CAMERA_PERMISSION_CODE = 1
-        // private const val FINE_LOCATION_PERMISSION_CODE = 2
+        private const val FINE_LOCATION_PERMISSION_CODE = 2
+        private const val CAMERA_AND_FINE_LOCATION_PERMISSION_CODE = 12
     }
 
 
